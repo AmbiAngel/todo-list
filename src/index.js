@@ -20,52 +20,120 @@ Logic to remove Note to array
 
 */
 import './style.css'
+import {Note, Project} from "./modules/factories"
 
+
+
+
+let addNoteBtn = document.querySelector('.add-note-btn')
+
+// Inputs for new note 
 let noteTitleInput = document.querySelector('#noteTitle')
 let noteDescInput = document.querySelector('#noteDesc')
 let dueDateInput = document.querySelector('#due-date')
 let priorityButtons = document.querySelectorAll('input[name=priority]')
-let addButton = document.querySelector('.add-button')
+let submitNoteBtn = document.querySelector('.submit-note-btn')
+
+let projectsContainer = document.querySelector('.projects-container')
+let projectsList = document.querySelector('.projects-list')
 
 
-addButton.addEventListener('click', addNote)
+addNoteBtn.addEventListener('click', handleAddNoteBtn)
 
-class Note{
-    constructor(title, desc, dueDate, prioNum, notes, checkList){
-        this.title = title
-        this.desc = desc
-        this.dueDate = dueDate
-        this.prioNum = prioNum
-        this.notes = notes
-        this.checkList = checkList
+function handleAddNoteBtn(e){
+
+}
+submitNoteBtn.addEventListener('click', createNoteFromInput)
+
+
+
+// let project1 = new Project('test project')
+
+// let note1 = new Note('creative title','creative desc','Jan 1','10','tools in hidden cart','creative checklist')
+
+// console.log({project1, note1});
+// console.log(note1.title);
+
+// function ClientController(){
+//     let currentProject = ''
+//     let projects = []
+//     let defaultProject = new Project('Default Todo')
+//     projects.push(defaultProject)
+
+
+// }
+
+// function setProject(projectName){
+//     currentProject = projectName
+// }
+
+/*
+find current project's reference
+CP.addNote(newNote)
+*/
+class Client{
+    constructor(){
+        this.currentProject = ''
+        this.projects = []
+        this.addProject('Default Todo')
+        this.setProject('Default Todo')
     }
-}
 
-class Project{
-    constructor(projectName){
-        this.projectName = projectName
+    setProject(targetProjectName){
+        this.currentProject = targetProjectName
+        // let actualProject = this.projects.find(proj => proj.name === targetProjectName)
+        
+        // console.log(actualProject);
     }
-}
 
-let project1 = new Project('test project')
-
-let note1 = new Note('creative title','creative desc','Jan 1','10','tools in hidden cart','creative checklist')
-
-console.log({project1, note1});
-console.log(note1.title);
-
-function ClientController(){
-    let projects = []
-    let defaultProject = new Project('Default Todo')
-    projects.push(defaultProject)
+    addProject(newProjectName){
+        // TODO: First validate no other project has this name
+        this.projects.push(new Project(newProjectName))
+        // TODO: Rerender DOM 
+    }
 
 
 }
 
-let client = ClientController()
+// class ProjectManager{
 
+// }
+
+// let client = ClientController()
+let listClient = new Client()
+
+console.log(listClient);
+listClient.addProject('ass')
+listClient.setProject('ass')
+console.log(listClient);
+
+
+
+class RenderDom{
+    static renderProjects(projects){
+        projects.forEach(proj =>{
+            let newEleLI = document.createElement('li') 
+            let newElEP = document.createElement('p')
+            
+            console.log(proj.name);
+            newElEP.textContent = proj.name
+            newEleLI.appendChild(newElEP)
+            projectsList.appendChild(newEleLI)
+        })
+    }
+    // static createProjectLI(projectName){
+    //     let newEleLI = document.createElement('li') 
+    //     let newElEP = document.createElement('p')
+
+    //     newElEP.textContent = projectName
+    //     newEleLI.appendChild(newElEP)
+    //     projectsList.appendChild(newEleLI)
+
+    // }
+}
+RenderDom.renderProjects(listClient.projects)
 // On "form" submit
-function addNote(e){
+function createNoteFromInput(e){
     console.log({noteTitleInput,noteDescInput,dueDateInput,priorityButtons});
 
     let selectedBtn;
@@ -83,5 +151,7 @@ function addNote(e){
         selectedBtn.value
         )
 
+    //Push note to current project
     console.log(newNote);
+
 }

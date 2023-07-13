@@ -7,26 +7,33 @@
     <title>Todo List</title>
 </head>
 <body>
-    <div class="input-container">
+    <div class="content">
+        <div class="main-client">
+            <div class="projects-container">
+                <ul class="projects-list">
 
-        <input type="text" name="Title" id="noteTitle" placeholder="Note title" required>
-        <textarea name="Desc" id="noteDesc" cols="30" rows="10" placeholder="Note details"></textarea>
-
-        <label for="due-date">Due Date:</label>
-        <input type="datetime-local" name="due-date" id="due-date" required>
-
-        <label for="">Priority</label>
-
-        <label for="low-priority">Low Priority</label>
-        <input type="radio" name="priority" id="low-priority" value="low" required>
-
-        <label for="med-priority">Medium Priority</label>
-        <input type="radio" name="priority" id="med-priority" value="medium" required>
-
-        <label for="high-priority">High Priority</label>
-        <input type="radio" name="priority" id="high-priority" value="high" required>
-
-        <button type="button" class="add-button">Add</button>
+                </ul>
+            </div>
+            <div class="notes-container"></div>
+            <div class="buttons-container">
+                <button class="add-note-btn">Add Note</button>
+                <button class="add-project-btn">Add Project</button>
+            </div>
+        </div>
+        <div class="input-container">
+            <input type="text" name="Title" id="noteTitle" placeholder="Note title" required>
+            <textarea name="Desc" id="noteDesc" cols="30" rows="10" placeholder="Note details"></textarea>
+            <label for="due-date">Due Date:</label>
+            <input type="datetime-local" name="due-date" id="due-date" required>
+            <label for="">Priority</label>
+            <label for="low-priority">Low Priority</label>
+            <input type="radio" name="priority" id="low-priority" value="low" required>
+            <label for="med-priority">Medium Priority</label>
+            <input type="radio" name="priority" id="med-priority" value="medium" required>
+            <label for="high-priority">High Priority</label>
+            <input type="radio" name="priority" id="high-priority" value="high" required>
+            <button type="button" class="submit-note-btn">Submit</button>
+        </div>
     </div>
 
     <script src="./bundle.js"></script>
