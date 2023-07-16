@@ -23,9 +23,11 @@ import './style.css'
 import {Note, Project} from "./modules/factories"
 
 
-
+let overlay = document.querySelector('.overlay')
+let addNoteInputContainer = document.querySelector('.add-note-input-container')
 
 let addNoteBtn = document.querySelector('.add-note-btn')
+let addProjectBtn = document.querySelector('.add-project-btn')
 
 // Inputs for new note 
 let noteTitleInput = document.querySelector('#noteTitle')
@@ -37,15 +39,30 @@ let submitNoteBtn = document.querySelector('.submit-note-btn')
 let projectsContainer = document.querySelector('.projects-container')
 let projectsList = document.querySelector('.projects-list')
 
+projectsContainer.addEventListener('click', handleProjectNameClick)
 
 addNoteBtn.addEventListener('click', handleAddNoteBtn)
 
-function handleAddNoteBtn(e){
-
-}
 submitNoteBtn.addEventListener('click', createNoteFromInput)
 
+addProjectBtn.addEventListener('click', handleAddProjectBtn)
 
+function handleAddProjectBtn(e){
+
+}
+
+
+function handleProjectNameClick(e){
+    if(e.target.tagName !== "LI")return
+    console.log(e.target.textContent);
+    listClient.setProject(e.target.textContent)
+}
+function handleAddNoteBtn(e){
+    console.log('add note btn');
+    addNoteInputContainer.classList.remove('visibility-hidden')
+    overlay.classList.remove('visibility-hidden')
+
+}
 
 // let project1 = new Project('test project')
 
@@ -113,11 +130,9 @@ class RenderDom{
     static renderProjects(projects){
         projects.forEach(proj =>{
             let newEleLI = document.createElement('li') 
-            let newElEP = document.createElement('p')
             
             console.log(proj.name);
-            newElEP.textContent = proj.name
-            newEleLI.appendChild(newElEP)
+            newEleLI.textContent = proj.name
             projectsList.appendChild(newEleLI)
         })
     }
@@ -134,6 +149,7 @@ class RenderDom{
 RenderDom.renderProjects(listClient.projects)
 // On "form" submit
 function createNoteFromInput(e){
+    // if(noteDescInput.value ===)
     console.log({noteTitleInput,noteDescInput,dueDateInput,priorityButtons});
 
     let selectedBtn;
@@ -142,7 +158,8 @@ function createNoteFromInput(e){
             selectedBtn = btn
         }
     })
-    console.log(selectedBtn.value);
+    selectedBtn = selectedBtn || priorityButtons[0]
+    // console.log(selectedBtn.value);
 
     let newNote = new Note(
         noteTitleInput.value,
