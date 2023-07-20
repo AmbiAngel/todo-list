@@ -22,10 +22,11 @@ Logic to remove Note to array
 import './style.css'
 import {Note, Project} from "./modules/factories"
 
-
+//Note Input
 let overlay = document.querySelector('.overlay')
-let addNoteInputContainer = document.querySelector('.add-note-input-container')
+let addNoteInputForm = document.querySelector('.add-note-input-container')
 
+// Add Buttons
 let addNoteBtn = document.querySelector('.add-note-btn')
 let addProjectBtn = document.querySelector('.add-project-btn')
 
@@ -33,17 +34,21 @@ let addProjectBtn = document.querySelector('.add-project-btn')
 let noteTitleInput = document.querySelector('#noteTitle')
 let noteDescInput = document.querySelector('#noteDesc')
 let dueDateInput = document.querySelector('#due-date')
-let priorityButtons = document.querySelectorAll('input[name=priority]')
+// let priorityButtons = document.querySelectorAll('input[name=priority]')
+let prioritySelection = document.querySelector('#select-priority')
 let submitNoteBtn = document.querySelector('.submit-note-btn')
 
+//Projects
 let projectsContainer = document.querySelector('.projects-container')
 let projectsList = document.querySelector('.projects-list')
 
+
+//Event listeners
 projectsContainer.addEventListener('click', handleProjectNameClick)
 
 addNoteBtn.addEventListener('click', handleAddNoteBtn)
 
-submitNoteBtn.addEventListener('click', createNoteFromInput)
+addNoteInputForm.addEventListener('submit', createNoteFromInput)
 
 addProjectBtn.addEventListener('click', handleAddProjectBtn)
 
@@ -59,7 +64,7 @@ function handleProjectNameClick(e){
 }
 function handleAddNoteBtn(e){
     console.log('add note btn');
-    addNoteInputContainer.classList.remove('visibility-hidden')
+    addNoteInputForm.classList.remove('visibility-hidden')
     overlay.classList.remove('visibility-hidden')
 
 }
@@ -120,8 +125,8 @@ class Client{
 let listClient = new Client()
 
 console.log(listClient);
-listClient.addProject('ass')
-listClient.setProject('ass')
+listClient.addProject('test1')
+listClient.setProject('test1')
 console.log(listClient);
 
 
@@ -149,23 +154,26 @@ class RenderDom{
 RenderDom.renderProjects(listClient.projects)
 // On "form" submit
 function createNoteFromInput(e){
-    // if(noteDescInput.value ===)
-    console.log({noteTitleInput,noteDescInput,dueDateInput,priorityButtons});
+    // No backend so prevent submit behavior for now
+    e.preventDefault()
+    
+    console.log({noteTitleInput,noteDescInput,dueDateInput,prioritySelection});
 
-    let selectedBtn;
-    priorityButtons.forEach((btn)=>{
-        if(btn.checked === true){
-            selectedBtn = btn
-        }
-    })
-    selectedBtn = selectedBtn || priorityButtons[0]
+    // let selectedBtn;
+    // priorityButtons.forEach((btn)=>{
+    //     if(btn.checked === true){
+    //         selectedBtn = btn
+    //     }
+    // })
+    // selectedBtn = selectedBtn || priorityButtons[0]
+
     // console.log(selectedBtn.value);
 
     let newNote = new Note(
         noteTitleInput.value,
         noteDescInput.value,
         dueDateInput.value,
-        selectedBtn.value
+        prioritySelection.value
         )
 
     //Push note to current project

@@ -28,7 +28,7 @@ body, html{
     justify-content: center;
     align-items: center;
     z-index: 2;
-    background-color: grey;
+    /* background-color: grey; */
 }
 
 .main-client{
@@ -75,4 +75,22 @@ body, html{
     z-index: 1;
     position: absolute;
     opacity: .5;
+}
+
+.add-note-input-container li{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add-note-input-container li + li{
+    margin-top: 1rem;
+}
+
+.add-note-input-container li input, .add-note-input-container li textarea, .add-note-input-container li select{
+    width: 44rem;
+}
+
+.add-note-input-container li textarea{
+    resize: vertical;
 }
