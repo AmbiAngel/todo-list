@@ -57,6 +57,8 @@ addProjectBtn.addEventListener('click', handleAddProjectBtn)
 
 overlay.addEventListener('click', hideInput)
 
+
+// Event Listener Callbacks
 function hideInput(e){
     console.log('overlay click');
     addNoteInputForm.classList.add('visibility-hidden')
@@ -67,11 +69,16 @@ function handleAddProjectBtn(e){
 
 }
 
-// Event Listener Callbacks
 function handleProjectNameClick(e){
     if(e.target.tagName !== "LI")return
     console.log(e.target.textContent);
+
+    
+    let prevProjName = listClient.currentProjectName
     listClient.setProject(e.target.textContent)
+    let currProjName = listClient.currentProjectName
+
+    RenderDom.styleCurrentProject(prevProjName, currProjName)
     RenderDom.renderNotes()
 
 }
@@ -108,16 +115,16 @@ function createNoteFromInput(e){
 // find current project's reference
 // CP.addNote(newNote)
 
-class Client{
+class ProjectManager{
     constructor(){
-        this.currentProject = ''
+        this.currentProjectName = ''
         this.projects = []
         this.addProject('Default Todo')
         this.setProject('Default Todo')
     }
 
     setProject(targetProjectName){
-        this.currentProject = targetProjectName
+        this.currentProjectName = targetProjectName
         // let actualProject = this.projects.find(proj => proj.name === targetProjectName)
         
         // console.log(actualProject);
@@ -130,7 +137,7 @@ class Client{
     }
 
     reportCurrentProjectIndex(){
-        let project = listClient.projects.findIndex(proj =>{return proj.name === listClient.currentProject})
+        let project = listClient.projects.findIndex(proj =>{return proj.name === listClient.currentProjectName})
         return project
     }
 
@@ -142,7 +149,7 @@ class Client{
 // }
 
 // let client = ClientController()
-let listClient = new Client()
+let listClient = new ProjectManager()
 
 console.log(listClient);
 listClient.addProject('test1')
@@ -155,7 +162,7 @@ class RenderDom{
     static renderProjects(projects){
         projects.forEach(proj =>{
             let newEleLI = document.createElement('li') 
-            
+            newEleLI.setAttribute('data-name',proj.name)
             console.log(proj.name);
             newEleLI.textContent = proj.name
             projectsList.appendChild(newEleLI)
@@ -179,6 +186,18 @@ class RenderDom{
                 note.priority)
             notesContainer.appendChild(noteContainer)
         })
+        
+    }
+
+    static styleCurrentProject(prevProjName, currProjName){
+        // , [data-name="test1"]
+        console.log({prevProjName, currProjName});
+        let prevProjEle = document.querySelector(`[data-name="${prevProjName}"]`)
+        prevProjEle.classList.remove('current-project')
+
+        let currProjEle = document.querySelector(`[data-name="${currProjName}"]`)
+        currProjEle.classList.add('current-project')
+
         
     }
 }

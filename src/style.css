@@ -92,3 +92,11 @@ body, html{
 .add-note-input-container li textarea{
     resize: vertical;
 }
+
+.note-container{
+    display: flex;
+}
+
+.current-project {
+    background-color: red;
+}
