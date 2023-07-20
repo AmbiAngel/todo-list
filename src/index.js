@@ -20,7 +20,7 @@ Logic to remove Note to array
 
 */
 import './style.css'
-import {Note, Project} from "./modules/factories"
+import {Note, Project, Containers} from "./modules/factories"
 
 //Note Input
 let overlay = document.querySelector('.overlay')
@@ -42,6 +42,9 @@ let submitNoteBtn = document.querySelector('.submit-note-btn')
 let projectsContainer = document.querySelector('.projects-container')
 let projectsList = document.querySelector('.projects-list')
 
+//Containers
+let notesContainer = document.querySelector('.notes-container')
+
 
 //Event listeners
 projectsContainer.addEventListener('click', handleProjectNameClick)
@@ -52,47 +55,59 @@ addNoteInputForm.addEventListener('submit', createNoteFromInput)
 
 addProjectBtn.addEventListener('click', handleAddProjectBtn)
 
+overlay.addEventListener('click', hideInput)
+
+function hideInput(e){
+    console.log('overlay click');
+    addNoteInputForm.classList.add('visibility-hidden')
+    overlay.classList.add('visibility-hidden')
+}
+
 function handleAddProjectBtn(e){
 
 }
 
-
+// Event Listener Callbacks
 function handleProjectNameClick(e){
     if(e.target.tagName !== "LI")return
     console.log(e.target.textContent);
     listClient.setProject(e.target.textContent)
+    RenderDom.renderNotes()
+
 }
+
 function handleAddNoteBtn(e){
-    console.log('add note btn');
     addNoteInputForm.classList.remove('visibility-hidden')
     overlay.classList.remove('visibility-hidden')
 
 }
 
-// let project1 = new Project('test project')
+function createNoteFromInput(e){
+    // No backend so prevent submit behavior for now
+    e.preventDefault()
+    
+    console.log({noteTitleInput,noteDescInput,dueDateInput,prioritySelection});
 
-// let note1 = new Note('creative title','creative desc','Jan 1','10','tools in hidden cart','creative checklist')
+    let newNote = new Note(
+        noteTitleInput.value,
+        noteDescInput.value,
+        dueDateInput.value,
+        prioritySelection.value
+        )
 
-// console.log({project1, note1});
-// console.log(note1.title);
+    //Push note to current project
+    console.log(newNote);
+    // TODO: Look for More optimal way to find current project than below?
+    let project = listClient.reportCurrentProjectIndex()
+    listClient.projects[project].addNote(newNote)
 
-// function ClientController(){
-//     let currentProject = ''
-//     let projects = []
-//     let defaultProject = new Project('Default Todo')
-//     projects.push(defaultProject)
+    console.log(listClient.projects[project]);
 
+    RenderDom.renderNotes()
+}
+// find current project's reference
+// CP.addNote(newNote)
 
-// }
-
-// function setProject(projectName){
-//     currentProject = projectName
-// }
-
-/*
-find current project's reference
-CP.addNote(newNote)
-*/
 class Client{
     constructor(){
         this.currentProject = ''
@@ -112,6 +127,11 @@ class Client{
         // TODO: First validate no other project has this name
         this.projects.push(new Project(newProjectName))
         // TODO: Rerender DOM 
+    }
+
+    reportCurrentProjectIndex(){
+        let project = listClient.projects.findIndex(proj =>{return proj.name === listClient.currentProject})
+        return project
     }
 
 
@@ -141,42 +161,26 @@ class RenderDom{
             projectsList.appendChild(newEleLI)
         })
     }
-    // static createProjectLI(projectName){
-    //     let newEleLI = document.createElement('li') 
-    //     let newElEP = document.createElement('p')
+    static renderNotes(){
+        function removeAllChildNodes(parent) {
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+        }
 
-    //     newElEP.textContent = projectName
-    //     newEleLI.appendChild(newElEP)
-    //     projectsList.appendChild(newEleLI)
+        removeAllChildNodes(notesContainer)
 
-    // }
+        let projectIndex = listClient.reportCurrentProjectIndex()
+        listClient.projects[projectIndex].notes.forEach(note =>{
+            let noteContainer = Containers.noteContainer(
+                note.title,
+                note.desc,
+                note.dueDate,
+                note.priority)
+            notesContainer.appendChild(noteContainer)
+        })
+        
+    }
 }
 RenderDom.renderProjects(listClient.projects)
 // On "form" submit
-function createNoteFromInput(e){
-    // No backend so prevent submit behavior for now
-    e.preventDefault()
-    
-    console.log({noteTitleInput,noteDescInput,dueDateInput,prioritySelection});
-
-    // let selectedBtn;
-    // priorityButtons.forEach((btn)=>{
-    //     if(btn.checked === true){
-    //         selectedBtn = btn
-    //     }
-    // })
-    // selectedBtn = selectedBtn || priorityButtons[0]
-
-    // console.log(selectedBtn.value);
-
-    let newNote = new Note(
-        noteTitleInput.value,
-        noteDescInput.value,
-        dueDateInput.value,
-        prioritySelection.value
-        )
-
-    //Push note to current project
-    console.log(newNote);
-
-}
