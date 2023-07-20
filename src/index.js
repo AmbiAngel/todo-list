@@ -184,6 +184,9 @@ class RenderDom{
                 note.desc,
                 note.dueDate,
                 note.priority)
+
+            noteContainer.classList.add('note-container')
+
             notesContainer.appendChild(noteContainer)
         })
         
