@@ -26,7 +26,9 @@ body, html{
     justify-content: center;
     align-items: center;
     z-index: 2;
-    /* background-color: grey; */
+    background-color: grey;
+    width: 50%;
+    border-radius: 10px;
 }
 
 .main-client{
@@ -80,6 +82,7 @@ body, html{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 90%;
 }
 .add-note-input-container li + li{
     margin-top: 1rem;
@@ -91,6 +94,20 @@ body, html{
 
 .add-note-input-container li textarea{
     resize: vertical;
+}
+
+.add-note-input-container > ul{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 2rem;
+    width: 100%;
+}
+
+.add-note-input-container > ul li:last-child{
+    justify-content: center;
 }
 
 .note-container{
